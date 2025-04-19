@@ -1,0 +1,220 @@
+<svg viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="1200" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="600" y="40" font-family="Arial" font-size="24" text-anchor="middle" font-weight="bold">Azure Infrastructure Diagram - Team-wise Resource Composition</text>
+  
+  <!-- Legend -->
+  <rect x="950" y="80" width="220" height="120" fill="#ffffff" stroke="#cccccc" rx="5"/>
+  <text x="1060" y="100" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold">Legend</text>
+  
+  <rect x="970" y="120" width="20" height="20" fill="#6495ED"/>
+  <text x="1000" y="135" font-family="Arial" font-size="12" x-anchor="start">Shared Services</text>
+  
+  <rect x="970" y="150" width="20" height="20" fill="#90EE90"/>
+  <text x="1000" y="165" font-family="Arial" font-size="12" x-anchor="start">Compute Resources</text>
+  
+  <rect x="970" y="180" width="20" height="20" fill="#FFD700"/>
+  <text x="1000" y="195" font-family="Arial" font-size="12" x-anchor="start">Data Services</text>
+  
+  <!-- Shared Services Region -->
+  <rect x="50" y="80" width="850" height="240" fill="#e6f3ff" stroke="#6495ED" rx="10"/>
+  <text x="475" y="110" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold">Shared Services</text>
+  
+  <!-- Application Gateway -->
+  <rect x="100" y="140" width="200" height="120" fill="#6495ED" rx="5"/>
+  <text x="200" y="165" font-family="Arial" font-size="14" text-anchor="middle" fill="#ffffff" font-weight="bold">Application Gateways</text>
+  <text x="200" y="190" font-family="Arial" font-size="12" text-anchor="middle" fill="#ffffff">• PROD-CUS-fuse-waf-hub</text>
+  <text x="200" y="210" font-family="Arial" font-size="12" text-anchor="middle" fill="#ffffff">• PROD-fuse-usn001-ase-waf-hub</text>
+  <text x="200" y="230" font-family="Arial" font-size="12" text-anchor="middle" fill="#ffffff">• Managed by DevOps Team</text>
+  
+  <!-- API Management -->
+  <rect x="350" y="140" width="200" height="120" fill="#6495ED" rx="5"/>
+  <text x="450" y="165" font-family="Arial" font-size="14" text-anchor="middle" fill="#ffffff" font-weight="bold">API Management</text>
+  <text x="450" y="190" font-family="Arial" font-size="12" text-anchor="middle" fill="#ffffff">• PROD-Fuse-APIM</text>
+  <text x="450" y="210" font-family="Arial" font-size="12" text-anchor="middle" fill="#ffffff">• PROD-PDCO-ESM</text>
+  <text x="450" y="230" font-family="Arial" font-size="12" text-anchor="middle" fill="#ffffff">• Managed by DSS Team</text>
+  
+  <!-- Traffic Manager -->
+  <rect x="600" y="140" width="200" height="120" fill="#6495ED" rx="5"/>
+  <text x="700" y="165" font-family="Arial" font-size="14" text-anchor="middle" fill="#ffffff" font-weight="bold">Global Services</text>
+  <text x="700" y="190" font-family="Arial" font-size="12" text-anchor="middle" fill="#ffffff">• Traffic Manager</text>
+  <text x="700" y="210" font-family="Arial" font-size="12" text-anchor="middle" fill="#ffffff">• Front Door</text>
+  <text x="700" y="230" font-family="Arial" font-size="12" text-anchor="middle" fill="#ffffff">• Managed by DevOps Team</text>
+  
+  <!-- Team Compute Resources -->
+  <rect x="50" y="350" width="1100" height="450" fill="#f0fff0" stroke="#90EE90" rx="10"/>
+  <text x="600" y="380" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold">Team Compute Resources</text>
+  
+  <!-- DSS Team Resources -->
+  <rect x="100" y="410" width="250" height="350" fill="#d4f7d4" stroke="#228B22" rx="5"/>
+  <text x="225" y="430" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold">DSS Team</text>
+  
+  <rect x="120" y="450" width="210" height="100" fill="#90EE90" rx="5"/>
+  <text x="225" y="470" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">App Services</text>
+  <text x="225" y="490" font-family="Arial" font-size="10" text-anchor="middle">• Platform-Token-API</text>
+  <text x="225" y="510" font-family="Arial" font-size="10" text-anchor="middle">• Platform-Security</text>
+  <text x="225" y="530" font-family="Arial" font-size="10" text-anchor="middle">• Platform-Enterprise-API</text>
+  
+  <rect x="120" y="560" width="210" height="100" fill="#90EE90" rx="5"/>
+  <text x="225" y="580" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Azure Functions</text>
+  <text x="225" y="600" font-family="Arial" font-size="10" text-anchor="middle">• Platform-MessageRouter-azf</text>
+  <text x="225" y="620" font-family="Arial" font-size="10" text-anchor="middle">• Platform-ClaimsMonitoring-azf</text>
+  <text x="225" y="640" font-family="Arial" font-size="10" text-anchor="middle">• Platform-ServiceBusMonitor-azf</text>
+  
+  <rect x="120" y="670" width="210" height="70" fill="#90EE90" rx="5"/>
+  <text x="225" y="690" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Logic Apps</text>
+  <text x="225" y="710" font-family="Arial" font-size="10" text-anchor="middle">• PROD-PDCO-Platform Integration Flows</text>
+  
+  <!-- Arwen Team Resources -->
+  <rect x="380" y="410" width="250" height="350" fill="#d4f7d4" stroke="#228B22" rx="5"/>
+  <text x="505" y="430" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold">Arwen Team</text>
+  
+  <rect x="400" y="450" width="210" height="100" fill="#90EE90" rx="5"/>
+  <text x="505" y="470" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">App Services</text>
+  <text x="505" y="490" font-family="Arial" font-size="10" text-anchor="middle">• Fuse-Scheduling-ASEv3</text>
+  <text x="505" y="510" font-family="Arial" font-size="10" text-anchor="middle">• Fuse-Service-Scheduling-API</text>
+  <text x="505" y="530" font-family="Arial" font-size="10" text-anchor="middle">• ASE/Container Apps Environment</text>
+  
+  <rect x="400" y="560" width="210" height="100" fill="#90EE90" rx="5"/>
+  <text x="505" y="580" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Container Instances</text>
+  <text x="505" y="600" font-family="Arial" font-size="10" text-anchor="middle">• Scheduling Microservices</text>
+  <text x="505" y="620" font-family="Arial" font-size="10" text-anchor="middle">• Notification Services</text>
+  <text x="505" y="640" font-family="Arial" font-size="10" text-anchor="middle">• Calendar Integration Services</text>
+  
+  <rect x="400" y="670" width="210" height="70" fill="#90EE90" rx="5"/>
+  <text x="505" y="690" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Functions</text>
+  <text x="505" y="710" font-family="Arial" font-size="10" text-anchor="middle">• Event-driven Scheduling Functions</text>
+  
+  <!-- Apollo Team Resources -->
+  <rect x="660" y="410" width="250" height="350" fill="#d4f7d4" stroke="#228B22" rx="5"/>
+  <text x="785" y="430" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold">Apollo Team</text>
+  
+  <rect x="680" y="450" width="210" height="100" fill="#90EE90" rx="5"/>
+  <text x="785" y="470" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">App Services</text>
+  <text x="785" y="490" font-family="Arial" font-size="10" text-anchor="middle">• Fuse-PatientServices</text>
+  <text x="785" y="510" font-family="Arial" font-size="10" text-anchor="middle">• BatchStatementProcessing</text>
+  <text x="785" y="530" font-family="Arial" font-size="10" text-anchor="middle">• ASE/Container Apps Environment</text>
+  
+  <rect x="680" y="560" width="210" height="100" fill="#90EE90" rx="5"/>
+  <text x="785" y="580" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Container Instances</text>
+  <text x="785" y="600" font-family="Arial" font-size="10" text-anchor="middle">• Patient Management Services</text>
+  <text x="785" y="620" font-family="Arial" font-size="10" text-anchor="middle">• Statement Processing Services</text>
+  <text x="785" y="640" font-family="Arial" font-size="10" text-anchor="middle">• Patient Portal Services</text>
+  
+  <rect x="680" y="670" width="210" height="70" fill="#90EE90" rx="5"/>
+  <text x="785" y="690" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Functions</text>
+  <text x="785" y="710" font-family="Arial" font-size="10" text-anchor="middle">• Patient Data Processing Functions</text>
+  
+  <!-- DevOps Team Resources -->
+  <rect x="940" y="410" width="150" height="350" fill="#d4f7d4" stroke="#228B22" rx="5"/>
+  <text x="1015" y="430" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold">DevOps Team</text>
+  
+  <rect x="960" y="450" width="110" height="100" fill="#90EE90" rx="5"/>
+  <text x="1015" y="470" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">App Services</text>
+  <text x="1015" y="490" font-family="Arial" font-size="10" text-anchor="middle">• Monitoring</text>
+  <text x="1015" y="510" font-family="Arial" font-size="10" text-anchor="middle">• SRE Tools</text>
+  <text x="1015" y="530" font-family="Arial" font-size="10" text-anchor="middle">• Management</text>
+  
+  <rect x="960" y="560" width="110" height="100" fill="#90EE90" rx="5"/>
+  <text x="1015" y="580" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Functions</text>
+  <text x="1015" y="600" font-family="Arial" font-size="10" text-anchor="middle">• Maintenance</text>
+  <text x="1015" y="620" font-family="Arial" font-size="10" text-anchor="middle">• Monitoring</text>
+  <text x="1015" y="640" font-family="Arial" font-size="10" text-anchor="middle">• Alerting</text>
+  
+  <rect x="960" y="670" width="110" height="70" fill="#90EE90" rx="5"/>
+  <text x="1015" y="690" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Logic Apps</text>
+  <text x="1015" y="710" font-family="Arial" font-size="10" text-anchor="middle">• Automation</text>
+  
+  <!-- Database Services -->
+  <rect x="50" y="830" width="1100" height="300" fill="#fffaeb" stroke="#FFD700" rx="10"/>
+  <text x="600" y="860" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold">Data Services</text>
+  
+  <!-- Azure SQL -->
+  <rect x="100" y="890" width="325" height="200" fill="#FFD700" rx="5"/>
+  <text x="262" y="920" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold">Azure SQL Databases</text>
+  
+  <rect x="120" y="940" width="130" height="120" fill="#fff7d1" stroke="#e0c000" rx="5"/>
+  <text x="185" y="960" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Enterprise Data</text>
+  <text x="185" y="980" font-family="Arial" font-size="10" text-anchor="middle">• US-N-DPMS-DBO-ENTP</text>
+  <text x="185" y="1000" font-family="Arial" font-size="10" text-anchor="middle">• US-N-DPMS-DBO-CLMS</text>
+  <text x="185" y="1020" font-family="Arial" font-size="10" text-anchor="middle">• US-N-DPMS-DBO-CHC</text>
+  <text x="185" y="1040" font-family="Arial" font-size="10" text-anchor="middle">• Primary/Secondary Regions</text>
+  
+  <rect x="275" y="940" width="130" height="120" fill="#fff7d1" stroke="#e0c000" rx="5"/>
+  <text x="340" y="960" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Practice Data</text>
+  <text x="340" y="980" font-family="Arial" font-size="10" text-anchor="middle">• Multiple Practice DBs</text>
+  <text x="340" y="1000" font-family="Arial" font-size="10" text-anchor="middle">• Data Conversion DBs</text>
+  <text x="340" y="1020" font-family="Arial" font-size="10" text-anchor="middle">• Managed by Data Conversions</text>
+  <text x="340" y="1040" font-family="Arial" font-size="10" text-anchor="middle">• Elastic Pools</text>
+  
+  <!-- Redis Cache -->
+  <rect x="460" y="890" width="180" height="200" fill="#FFD700" rx="5"/>
+  <text x="550" y="920" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold">Redis Cache</text>
+  
+  <rect x="480" y="940" width="140" height="120" fill="#fff7d1" stroke="#e0c000" rx="5"/>
+  <text x="550" y="970" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Shared Cache Services</text>
+  <text x="550" y="1000" font-family="Arial" font-size="10" text-anchor="middle">• Multiple Premium Tier</text>
+  <text x="550" y="1020" font-family="Arial" font-size="10" text-anchor="middle">• Cross-Region Replication</text>
+  <text x="550" y="1040" font-family="Arial" font-size="10" text-anchor="middle">• Used by All Teams</text>
+  
+  <!-- Cosmos DB -->
+  <rect x="680" y="890" width="200" height="200" fill="#FFD700" rx="5"/>
+  <text x="780" y="920" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold">Cosmos DB</text>
+  
+  <rect x="700" y="940" width="160" height="120" fill="#fff7d1" stroke="#e0c000" rx="5"/>
+  <text x="780" y="970" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">NoSQL Data Stores</text>
+  <text x="780" y="1000" font-family="Arial" font-size="10" text-anchor="middle">• Multi-region Write</text>
+  <text x="780" y="1020" font-family="Arial" font-size="10" text-anchor="middle">• Used for high-throughput</text>
+  <text x="780" y="1040" font-family="Arial" font-size="10" text-anchor="middle">• Event sourcing patterns</text>
+  
+  <!-- Storage Accounts -->
+  <rect x="920" y="890" width="180" height="200" fill="#FFD700" rx="5"/>
+  <text x="1010" y="920" font-family="Arial" font-size="16" text-anchor="middle" font-weight="bold">Storage Accounts</text>
+  
+  <rect x="940" y="940" width="140" height="120" fill="#fff7d1" stroke="#e0c000" rx="5"/>
+  <text x="1010" y="960" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Storage Services</text>
+  <text x="1010" y="980" font-family="Arial" font-size="10" text-anchor="middle">• Blob Storage</text>
+  <text x="1010" y="1000" font-family="Arial" font-size="10" text-anchor="middle">• File Storage</text>
+  <text x="1010" y="1020" font-family="Arial" font-size="10" text-anchor="middle">• Queue Storage</text>
+  <text x="1010" y="1040" font-family="Arial" font-size="10" text-anchor="middle">• Table Storage</text>
+  
+  <!-- Cross-Region Connection Lines -->
+  <!-- Traffic Manager to Regions -->
+  <path d="M 700 260 C 700 320, 700 320, 225 410" stroke="#6495ED" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 700 260 C 700 320, 700 320, 505 410" stroke="#6495ED" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 700 260 C 700 320, 700 320, 785 410" stroke="#6495ED" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- App Gateway to Compute Resources -->
+  <path d="M 200 260 C 200 320, 200 320, 225 410" stroke="#6495ED" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 200 260 C 200 320, 300 340, 505 410" stroke="#6495ED" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 200 260 C 200 320, 400 340, 785 410" stroke="#6495ED" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- API Management to Compute Resources -->
+  <path d="M 450 260 C 450 320, 400 320, 225 410" stroke="#6495ED" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 450 260 C 450 320, 450 320, 505 410" stroke="#6495ED" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 450 260 C 450 320, 500 340, 785 410" stroke="#6495ED" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Compute to Database -->
+  <path d="M 225 760 C 225 800, 225 820, 225 890" stroke="#90EE90" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 505 760 C 505 800, 505 820, 550 890" stroke="#90EE90" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 785 760 C 785 800, 785 820, 780 890" stroke="#90EE90" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 1015 760 C 1015 800, 1015 820, 1010 890" stroke="#90EE90" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Disaster Recovery Connections -->
+  <path d="M 180 1060 L 390 1060" stroke="#FF0000" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <circle cx="180" cy="1060" r="5" fill="#FF0000"/>
+  <circle cx="390" cy="1060" r="5" fill="#FF0000"/>
+  <text x="285" y="1080" font-family="Arial" font-size="10" text-anchor="middle" fill="#FF0000">SQL Failover Group</text>
+  
+  <path d="M 550 1060 L 780 1060" stroke="#FF0000" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <circle cx="550" cy="1060" r="5" fill="#FF0000"/>
+  <circle cx="780" cy="1060" r="5" fill="#FF0000"/>
+  <text x="665" y="1080" font-family="Arial" font-size="10" text-anchor="middle" fill="#FF0000">Redis & Cosmos Geo-Replication</text>
+  
+  <path d="M 941 1060 L 1079 1060" stroke="#FF0000" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <circle cx="941" cy="1060" r="5" fill="#FF0000"/>
+  <circle cx="1079" cy="1060" r="5" fill="#FF0000"/>
+  <text x="1010" y="1080" font-family="Arial" font-size="10" text-anchor="middle" fill="#FF0000">RA-GRS/RA-GZRS</text>
+</svg>

@@ -1,0 +1,167 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#f0f0f0"/>
+  
+  <!-- Title -->
+  <text x="600" y="40" font-family="Arial" font-size="24" text-anchor="middle" font-weight="bold">Azure Enterprise Application Disaster Recovery Architecture</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="70" width="20" height="20" fill="#0078D4"/>
+  <text x="80" y="85" font-family="Arial" font-size="14">Primary Region</text>
+  <rect x="200" y="70" width="20" height="20" fill="#50C878"/>
+  <text x="230" y="85" font-family="Arial" font-size="14">Secondary (DR) Region</text>
+  <rect x="400" y="70" width="20" height="20" fill="#FF8C00"/>
+  <text x="430" y="85" font-family="Arial" font-size="14">Global Services</text>
+  <path d="M600 70 L650 70 L650 90 L600 90 Z" stroke="#000" fill="none" stroke-dasharray="5,5"/>
+  <text x="660" y="85" font-family="Arial" font-size="14">Replication/Sync</text>
+  
+  <!-- Primary Region -->
+  <rect x="100" y="120" width="450" height="600" fill="#e6f2ff" stroke="#0078D4" stroke-width="3" rx="10"/>
+  <text x="325" y="150" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold" fill="#0078D4">Primary Region</text>
+  
+  <!-- Secondary Region -->
+  <rect x="650" y="120" width="450" height="600" fill="#e6ffe6" stroke="#50C878" stroke-width="3" rx="10"/>
+  <text x="875" y="150" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold" fill="#50C878">Secondary (DR) Region</text>
+  
+  <!-- Global Traffic Distribution -->
+  <rect x="350" y="180" width="500" height="60" fill="#ffebcc" stroke="#FF8C00" stroke-width="2" rx="5"/>
+  <text x="600" y="215" font-family="Arial" font-size="16" text-anchor="middle" fill="#000">Azure Traffic Manager / Front Door</text>
+  
+  <!-- Primary Region Components -->
+  <!-- Network Layer -->
+  <rect x="125" y="260" width="400" height="80" fill="#b3d1ff" stroke="#0078D4" stroke-width="2" rx="5"/>
+  <text x="325" y="290" font-family="Arial" font-size="14" text-anchor="middle">Virtual Network + Subnets + NSGs</text>
+  <text x="325" y="320" font-family="Arial" font-size="14" text-anchor="middle">Azure Firewall + Application Gateway</text>
+  
+  <!-- Compute Layer -->
+  <rect x="125" y="360" width="180" height="140" fill="#b3d1ff" stroke="#0078D4" stroke-width="2" rx="5"/>
+  <text x="215" y="380" font-family="Arial" font-size="14" text-anchor="middle">App Service Environment</text>
+  <rect x="140" y="390" width="70" height="40" fill="#fff" stroke="#0078D4"/>
+  <text x="175" y="415" font-family="Arial" font-size="12" text-anchor="middle">App Services</text>
+  <rect x="220" y="390" width="70" height="40" fill="#fff" stroke="#0078D4"/>
+  <text x="255" y="415" font-family="Arial" font-size="12" text-anchor="middle">Functions</text>
+  <rect x="140" y="440" width="150" height="40" fill="#fff" stroke="#0078D4"/>
+  <text x="215" y="465" font-family="Arial" font-size="12" text-anchor="middle">Private DNS Zones</text>
+  
+  <rect x="345" y="360" width="180" height="140" fill="#b3d1ff" stroke="#0078D4" stroke-width="2" rx="5"/>
+  <text x="435" y="380" font-family="Arial" font-size="14" text-anchor="middle">Container Apps Environment</text>
+  <rect x="360" y="390" width="70" height="40" fill="#fff" stroke="#0078D4"/>
+  <text x="395" y="415" font-family="Arial" font-size="12" text-anchor="middle">Container Apps</text>
+  <rect x="440" y="390" width="70" height="40" fill="#fff" stroke="#0078D4"/>
+  <text x="475" y="415" font-family="Arial" font-size="12" text-anchor="middle">Container Instances</text>
+  <rect x="360" y="440" width="150" height="40" fill="#fff" stroke="#0078D4"/>
+  <text x="435" y="465" font-family="Arial" font-size="12" text-anchor="middle">Public App Services</text>
+  
+  <!-- Data Layer -->
+  <rect x="125" y="520" width="400" height="180" fill="#b3d1ff" stroke="#0078D4" stroke-width="2" rx="5"/>
+  <text x="325" y="540" font-family="Arial" font-size="14" text-anchor="middle">Data Services</text>
+  
+  <rect x="140" y="550" width="110" height="60" fill="#fff" stroke="#0078D4"/>
+  <text x="195" y="580" font-family="Arial" font-size="12" text-anchor="middle">Azure SQL Database</text>
+  <text x="195" y="595" font-family="Arial" font-size="10" text-anchor="middle">Primary (R/W)</text>
+  
+  <rect x="260" y="550" width="110" height="60" fill="#fff" stroke="#0078D4"/>
+  <text x="315" y="580" font-family="Arial" font-size="12" text-anchor="middle">Cosmos DB</text>
+  <text x="315" y="595" font-family="Arial" font-size="10" text-anchor="middle">Multi-region write</text>
+  
+  <rect x="380" y="550" width="130" height="60" fill="#fff" stroke="#0078D4"/>
+  <text x="445" y="580" font-family="Arial" font-size="12" text-anchor="middle">Redis Cache</text>
+  <text x="445" y="595" font-family="Arial" font-size="10" text-anchor="middle">Premium Tier</text>
+  
+  <rect x="140" y="620" width="170" height="60" fill="#fff" stroke="#0078D4"/>
+  <text x="225" y="650" font-family="Arial" font-size="12" text-anchor="middle">Storage Accounts</text>
+  <text x="225" y="665" font-family="Arial" font-size="10" text-anchor="middle">RA-GRS/RA-GZRS</text>
+  
+  <rect x="320" y="620" width="190" height="60" fill="#fff" stroke="#0078D4"/>
+  <text x="415" y="650" font-family="Arial" font-size="12" text-anchor="middle">Recovery Services Vault</text>
+  <text x="415" y="665" font-family="Arial" font-size="10" text-anchor="middle">Backups + Azure Site Recovery</text>
+  
+  <!-- Secondary Region Components -->
+  <!-- Network Layer -->
+  <rect x="675" y="260" width="400" height="80" fill="#c2f0c2" stroke="#50C878" stroke-width="2" rx="5"/>
+  <text x="875" y="290" font-family="Arial" font-size="14" text-anchor="middle">Virtual Network + Subnets + NSGs</text>
+  <text x="875" y="320" font-family="Arial" font-size="14" text-anchor="middle">Azure Firewall + Application Gateway</text>
+  
+  <!-- Compute Layer -->
+  <rect x="675" y="360" width="180" height="140" fill="#c2f0c2" stroke="#50C878" stroke-width="2" rx="5"/>
+  <text x="765" y="380" font-family="Arial" font-size="14" text-anchor="middle">App Service Environment</text>
+  <rect x="690" y="390" width="70" height="40" fill="#fff" stroke="#50C878"/>
+  <text x="725" y="415" font-family="Arial" font-size="12" text-anchor="middle">App Services</text>
+  <rect x="770" y="390" width="70" height="40" fill="#fff" stroke="#50C878"/>
+  <text x="805" y="415" font-family="Arial" font-size="12" text-anchor="middle">Functions</text>
+  <rect x="690" y="440" width="150" height="40" fill="#fff" stroke="#50C878"/>
+  <text x="765" y="465" font-family="Arial" font-size="12" text-anchor="middle">Private DNS Zones</text>
+  
+  <rect x="895" y="360" width="180" height="140" fill="#c2f0c2" stroke="#50C878" stroke-width="2" rx="5"/>
+  <text x="985" y="380" font-family="Arial" font-size="14" text-anchor="middle">Container Apps Environment</text>
+  <rect x="910" y="390" width="70" height="40" fill="#fff" stroke="#50C878"/>
+  <text x="945" y="415" font-family="Arial" font-size="12" text-anchor="middle">Container Apps</text>
+  <rect x="990" y="390" width="70" height="40" fill="#fff" stroke="#50C878"/>
+  <text x="1025" y="415" font-family="Arial" font-size="12" text-anchor="middle">Container Instances</text>
+  <rect x="910" y="440" width="150" height="40" fill="#fff" stroke="#50C878"/>
+  <text x="985" y="465" font-family="Arial" font-size="12" text-anchor="middle">Public App Services</text>
+  
+  <!-- Data Layer -->
+  <rect x="675" y="520" width="400" height="180" fill="#c2f0c2" stroke="#50C878" stroke-width="2" rx="5"/>
+  <text x="875" y="540" font-family="Arial" font-size="14" text-anchor="middle">Data Services</text>
+  
+  <rect x="690" y="550" width="110" height="60" fill="#fff" stroke="#50C878"/>
+  <text x="745" y="580" font-family="Arial" font-size="12" text-anchor="middle">Azure SQL Database</text>
+  <text x="745" y="595" font-family="Arial" font-size="10" text-anchor="middle">Secondary (RO)</text>
+  
+  <rect x="810" y="550" width="110" height="60" fill="#fff" stroke="#50C878"/>
+  <text x="865" y="580" font-family="Arial" font-size="12" text-anchor="middle">Cosmos DB</text>
+  <text x="865" y="595" font-family="Arial" font-size="10" text-anchor="middle">Replica</text>
+  
+  <rect x="930" y="550" width="130" height="60" fill="#fff" stroke="#50C878"/>
+  <text x="995" y="580" font-family="Arial" font-size="12" text-anchor="middle">Redis Cache</text>
+  <text x="995" y="595" font-family="Arial" font-size="10" text-anchor="middle">Geo-replicated</text>
+  
+  <rect x="690" y="620" width="170" height="60" fill="#fff" stroke="#50C878"/>
+  <text x="775" y="650" font-family="Arial" font-size="12" text-anchor="middle">Storage Accounts</text>
+  <text x="775" y="665" font-family="Arial" font-size="10" text-anchor="middle">RA-GRS/RA-GZRS Replicas</text>
+  
+  <rect x="870" y="620" width="190" height="60" fill="#fff" stroke="#50C878"/>
+  <text x="965" y="650" font-family="Arial" font-size="12" text-anchor="middle">Recovery Services Vault</text>
+  <text x="965" y="665" font-family="Arial" font-size="10" text-anchor="middle">Recovery Target</text>
+  
+  <!-- Global Services -->
+  <rect x="350" y="720" width="500" height="80" fill="#ffebcc" stroke="#FF8C00" stroke-width="2" rx="5"/>
+  <text x="600" y="740" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Global Services</text>
+  <text x="425" y="765" font-family="Arial" font-size="12" text-anchor="middle">Azure Active Directory</text>
+  <text x="600" y="765" font-family="Arial" font-size="12" text-anchor="middle">Azure Monitor / App Insights</text>
+  <text x="775" y="765" font-family="Arial" font-size="12" text-anchor="middle">DynaTrace</text>
+  <text x="600" y="785" font-family="Arial" font-size="12" text-anchor="middle">API Management (Premium)</text>
+  
+  <!-- Connection Lines -->
+  <!-- SQL Replication -->
+  <path d="M250 580 L690 580" stroke="#000" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+  <text x="470" y="570" font-family="Arial" font-size="12" text-anchor="middle">Failover Group</text>
+  
+  <!-- Cosmos DB Replication -->
+  <path d="M370 580 L810 580" stroke="#000" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+  <text x="590" y="595" font-family="Arial" font-size="12" text-anchor="middle">Multi-Region Write</text>
+  
+  <!-- Redis Replication -->
+  <path d="M445 580 L930 580" stroke="#000" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+  
+  <!-- Storage Replication -->
+  <path d="M225 650 L690 650" stroke="#000" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+  
+  <!-- VNet Peering -->
+  <path d="M525 300 L675 300" stroke="#000" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+  <text x="600" y="290" font-family="Arial" font-size="12" text-anchor="middle">VNet Peering</text>
+  
+  <!-- ASR Orchestration -->
+  <path d="M415 650 L870 650" stroke="#000" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+  <text x="640" y="640" font-family="Arial" font-size="12" text-anchor="middle">ASR Orchestration</text>
+  
+  <!-- Traffic Manager Distribution -->
+  <path d="M600 240 L600 260" stroke="#FF8C00" stroke-width="2" fill="none"/>
+  <path d="M600 240 L325 260" stroke="#FF8C00" stroke-width="2" fill="none"/>
+  <path d="M600 240 L875 260" stroke="#FF8C00" stroke-width="2" fill="none"/>
+  
+  <!-- Global Monitoring -->
+  <path d="M600 720 L325 440" stroke="#FF8C00" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+  <path d="M600 720 L875 440" stroke="#FF8C00" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+</svg>
