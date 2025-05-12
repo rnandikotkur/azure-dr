@@ -1,0 +1,103 @@
+name: 'NCUS-Infrastructure-Deployment'
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - environments/ncus/**
+    - modules/**
+
+parameters:
+- name: environment
+  displayName: Environment
+  type: string
+  default: prod
+  values:
+  - prod
+  - staging
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  region: 'North Central US'
+  regionShort: 'ncus'
+  serviceConnection: 'azure-service-connection'
+  tfStateResourceGroup: 'terraform-state-rg'
+  tfStateStorageAccount: 'terraformstate'
+  tfStateContainer: 'tfstate'
+
+stages:
+- stage: 'Build'
+  displayName: 'Build'
+  jobs:
+  - job: 'Validate'
+    displayName: 'Validate Terraform'
+    steps:
+    - task: TerraformInstaller@0
+      displayName: 'Install Terraform'
+      inputs:
+        terraformVersion: '1.5.0'
+    
+    - task: TerraformTaskV3@3
+      displayName: 'Terraform Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/environments/ncus'
+        backendServiceArm: '$(serviceConnection)'
+        backendAzureRmResourceGroupName: '$(tfStateResourceGroup)'
+        backendAzureRmStorageAccountName: '$(tfStateStorageAccount)'
+        backendAzureRmContainerName: '$(tfStateContainer)'
+        backendAzureRmKey: '${{parameters.environment}}-$(regionShort).tfstate'
+    
+    - task: TerraformTaskV3@3
+      displayName: 'Terraform Validate'
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/environments/ncus'
+
+- stage: 'Deploy'
+  displayName: 'Deploy Infrastructure'
+  dependsOn: 'Build'
+  jobs:
+  - job: 'Deploy'
+    displayName: 'Deploy Infrastructure'
+    steps:
+    - task: TerraformInstaller@0
+      displayName: 'Install Terraform'
+      inputs:
+        terraformVersion: '1.5.0'
+    
+    - task: TerraformTaskV3@3
+      displayName: 'Terraform Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/environments/ncus'
+        backendServiceArm: '$(serviceConnection)'
+        backendAzureRmResourceGroupName: '$(tfStateResourceGroup)'
+        backendAzureRmStorageAccountName: '$(tfStateStorageAccount)'
+        backendAzureRmContainerName: '$(tfStateContainer)'
+        backendAzureRmKey: '${{parameters.environment}}-$(regionShort).tfstate'
+    
+    - task: TerraformTaskV3@3
+      displayName: 'Terraform Plan'
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/environments/ncus'
+        environmentServiceNameAzureRM: '$(serviceConnection)'
+        commandOptions: '-var="environment=${{parameters.environment}}" -out=tfplan'
+    
+    - task: TerraformTaskV3@3
+      displayName: 'Terraform Apply'
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/environments/ncus'
+        environmentServiceNameAzureRM: '$(serviceConnection)'
+        commandOptions: 'tfplan'

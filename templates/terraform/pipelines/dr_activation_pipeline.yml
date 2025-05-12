@@ -1,0 +1,66 @@
+name: 'DR-Activation-Pipeline'
+
+# This pipeline is manually triggered during a DR event
+trigger: none
+
+parameters:
+- name: environment
+  displayName: Environment
+  type: string
+  default: prod
+  values:
+  - prod
+  - staging
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  region: 'South Central US'
+  regionShort: 'scus'
+  serviceConnection: 'azure-service-connection'
+  tfStateResourceGroup: 'terraform-state-rg'
+  tfStateStorageAccount: 'terraformstate'
+  tfStateContainer: 'tfstate'
+
+stages:
+- stage: 'Deploy'
+  displayName: 'Deploy DR Compute Resources'
+  jobs:
+  - job: 'Deploy'
+    displayName: 'Deploy Compute Infrastructure'
+    steps:
+    - task: TerraformInstaller@0
+      displayName: 'Install Terraform'
+      inputs:
+        terraformVersion: '1.5.0'
+    
+    - task: TerraformTaskV3@3
+      displayName: 'Terraform Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/environments/scus'
+        backendServiceArm: '$(serviceConnection)'
+        backendAzureRmResourceGroupName: '$(tfStateResourceGroup)'
+        backendAzureRmStorageAccountName: '$(tfStateStorageAccount)'
+        backendAzureRmContainerName: '$(tfStateContainer)'
+        backendAzureRmKey: '${{parameters.environment}}-$(regionShort)-dr.tfstate'
+    
+    - task: TerraformTaskV3@3
+      displayName: 'Terraform Plan'
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/environments/scus'
+        environmentServiceNameAzureRM: '$(serviceConnection)'
+        commandOptions: '-var="environment=${{parameters.environment}}" -var="deploy_compute=true" -out=tfplan'
+    
+    - task: TerraformTaskV3@3
+      displayName: 'Terraform Apply'
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/environments/scus'
+        environmentServiceNameAzureRM: '$(serviceConnection)'
+        commandOptions: 'tfplan'

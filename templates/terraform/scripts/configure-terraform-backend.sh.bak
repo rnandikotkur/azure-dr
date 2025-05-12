@@ -1,0 +1,118 @@
+#!/bin/bash
+# configure-terraform-backend.sh
+#
+# This script helps configure the Terraform backend for a specific region and resource group.
+# It generates the terraform init command with the appropriate backend configuration parameters.
+
+# Default values
+STORAGE_RESOURCE_GROUP="tfstate-rg"
+STORAGE_ACCOUNT="terraformstate"
+CONTAINER="tfstate"
+
+# Display usage information
+usage() {
+    echo "Usage: $0 -r <region> -g <resource_group_name> [-s <storage_resource_group>] [-a <storage_account>] [-c <container>]"
+    echo ""
+    echo "Required parameters:"
+    echo "  -r, --region                 Azure region short name (ncus or scus)"
+    echo "  -g, --resource-group         Name of the resource group to deploy"
+    echo ""
+    echo "Optional parameters:"
+    echo "  -s, --storage-resource-group Resource group containing the storage account (default: tfstate-rg)"
+    echo "  -a, --storage-account        Name of the storage account (default: terraformstate)"
+    echo "  -c, --container              Name of the blob container (default: tfstate)"
+    echo "  -h, --help                   Display this help message"
+    exit 1
+}
+
+# Parse command-line arguments
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+        -r|--region)
+            REGION="$2"
+            shift 2
+            ;;
+        -g|--resource-group)
+            RESOURCE_GROUP_NAME="$2"
+            shift 2
+            ;;
+        -s|--storage-resource-group)
+            STORAGE_RESOURCE_GROUP="$2"
+            shift 2
+            ;;
+        -a|--storage-account)
+            STORAGE_ACCOUNT="$2"
+            shift 2
+            ;;
+        -c|--container)
+            CONTAINER="$2"
+            shift 2
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            echo "Unknown option: $1"
+            usage
+            ;;
+    esac
+done
+
+# Validate required parameters
+if [[ -z "$REGION" || -z "$RESOURCE_GROUP_NAME" ]]; then
+    echo "ERROR: Region and resource group name are required."
+    usage
+fi
+
+# Validate region
+if [[ "$REGION" != "ncus" && "$REGION" != "scus" ]]; then
+    echo "ERROR: Region must be either 'ncus' or 'scus'."
+    exit 1
+fi
+
+# Generate a sanitized resource group name for the state file key
+STATE_KEY="$REGION/$RESOURCE_GROUP_NAME.tfstate"
+
+# Set the environment directory
+ENVIRONMENT_PATH="../environments/$REGION"
+
+# Check if the environment directory exists
+if [ ! -d "$ENVIRONMENT_PATH" ]; then
+    echo "ERROR: Environment directory not found: $ENVIRONMENT_PATH"
+    exit 1
+fi
+
+# Change to the environment directory
+cd "$ENVIRONMENT_PATH" || exit 1
+
+# Generate and display the terraform init command
+COMMAND="terraform init \
+  -backend-config=\"resource_group_name=$STORAGE_RESOURCE_GROUP\" \
+  -backend-config=\"storage_account_name=$STORAGE_ACCOUNT\" \
+  -backend-config=\"container_name=$CONTAINER\" \
+  -backend-config=\"key=$STATE_KEY\""
+
+echo "Executing: $COMMAND"
+echo ""
+echo "This will configure Terraform to use the following backend:"
+echo "  - Resource Group: $STORAGE_RESOURCE_GROUP"
+echo "  - Storage Account: $STORAGE_ACCOUNT"
+echo "  - Container: $CONTAINER"
+echo "  - State Key: $STATE_KEY"
+echo ""
+
+# Ask for confirmation
+read -p "Do you want to continue? (Y/N): " CONFIRM
+if [[ "$CONFIRM" != "Y" && "$CONFIRM" != "y" ]]; then
+    echo "Operation cancelled."
+    exit 0
+fi
+
+# Execute the command (eval is used to handle the quoted parameters correctly)
+eval "$COMMAND"
+
+echo ""
+echo "Backend configuration complete. You can now plan and apply your Terraform configuration:"
+echo "  terraform plan -var=\"resource_group_name=$RESOURCE_GROUP_NAME\" -out=tfplan"
+echo "  terraform apply tfplan"

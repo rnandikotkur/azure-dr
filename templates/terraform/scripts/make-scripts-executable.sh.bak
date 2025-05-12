@@ -1,0 +1,7 @@
+#!/bin/bash
+# Set executable permissions on shell scripts
+
+chmod +x configure-terraform-backend.sh
+chmod +x setup-terraform-state-storage.sh
+
+echo "Shell scripts are now executable."

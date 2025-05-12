@@ -1,0 +1,154 @@
+#!/bin/bash
+# Script to import existing Azure resources into Terraform state
+
+set -e
+
+# Variables to be set by user
+SUBSCRIPTION_ID=""
+RESOURCE_GROUP=""
+REGION="northcentralus"
+ENVIRONMENT="prod"
+
+# Ensure variables are set
+if [ -z "$SUBSCRIPTION_ID" ] || [ -z "$RESOURCE_GROUP" ]; then
+  echo "Error: Please set SUBSCRIPTION_ID and RESOURCE_GROUP variables in this script."
+  exit 1
+fi
+
+# Login to Azure
+echo "Logging in to Azure..."
+az login
+az account set --subscription $SUBSCRIPTION_ID
+
+# Navigate to the correct directory
+cd ../environments/ncus
+
+# Initialize Terraform
+echo "Initializing Terraform..."
+terraform init
+
+# Import Resource Group
+echo "Importing Resource Group..."
+terraform import azurerm_resource_group.main /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP
+
+# Import Virtual Network (update the vnet name as needed)
+echo "Getting VNet information..."
+VNET_NAME=$(az network vnet list --resource-group $RESOURCE_GROUP --query "[0].name" -o tsv)
+
+if [ -n "$VNET_NAME" ]; then
+  echo "Importing VNet: $VNET_NAME..."
+  terraform import "module.networking.azurerm_virtual_network.main[0]" /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME
+fi
+
+# Import App Service Environment (update ASE name as needed)
+echo "Getting ASE information..."
+ASE_NAME=$(az appservice ase list --resource-group $RESOURCE_GROUP --query "[0].name" -o tsv)
+
+if [ -n "$ASE_NAME" ]; then
+  echo "Importing ASE: $ASE_NAME..."
+  terraform import module.app_service_environment.azurerm_app_service_environment_v3.main /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Web/hostingEnvironments/$ASE_NAME
+fi
+
+# Import App Gateway (update App Gateway name as needed)
+echo "Getting Application Gateway information..."
+APPGW_NAME=$(az network application-gateway list --resource-group $RESOURCE_GROUP --query "[0].name" -o tsv)
+
+if [ -n "$APPGW_NAME" ]; then
+  echo "Importing Application Gateway: $APPGW_NAME..."
+  terraform import module.app_gateway.azurerm_application_gateway.main /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Network/applicationGateways/$APPGW_NAME
+fi
+
+# Import WAF Policy
+echo "Getting WAF Policy information..."
+WAF_POLICY_NAME=$(az network application-gateway waf-policy list --resource-group $RESOURCE_GROUP --query "[0].name" -o tsv)
+
+if [ -n "$WAF_POLICY_NAME" ]; then
+  echo "Importing WAF Policy: $WAF_POLICY_NAME..."
+  terraform import azurerm_web_application_firewall_policy.main /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/$WAF_POLICY_NAME
+fi
+
+# Import App Service Plans
+echo "Getting App Service Plans..."
+APP_PLANS=$(az appservice plan list --resource-group $RESOURCE_GROUP --query "[].name" -o tsv)
+
+if [ -n "$APP_PLANS" ]; then
+  for PLAN_NAME in $APP_PLANS; do
+    echo "Importing App Service Plan: $PLAN_NAME..."
+    # Determine if it's in ASE or public
+    ASE_ID=$(az appservice plan show --name $PLAN_NAME --resource-group $RESOURCE_GROUP --query "hostingEnvironmentProfile.id" -o tsv)
+    
+    if [ -n "$ASE_ID" ] && [ "$ASE_ID" != "null" ]; then
+      # ASE-based plan
+      terraform import module.app_service_plan_ase.azurerm_service_plan.main /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Web/serverfarms/$PLAN_NAME
+    else
+      # Public plan
+      terraform import module.app_service_plan_public.azurerm_service_plan.main /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Web/serverfarms/$PLAN_NAME
+    fi
+  done
+fi
+
+# Import App Services
+echo "Getting App Services..."
+WEBAPPS=$(az webapp list --resource-group $RESOURCE_GROUP --query "[].name" -o tsv)
+
+if [ -n "$WEBAPPS" ]; then
+  for WEBAPP_NAME in $WEBAPPS; do
+    echo "Importing App Service: $WEBAPP_NAME..."
+    # Determine if it's in ASE or public
+    ASE_ID=$(az webapp show --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --query "hostingEnvironmentProfile.id" -o tsv)
+    
+    if [ -n "$ASE_ID" ] && [ "$ASE_ID" != "null" ]; then
+      # Extract app name from full name (app-prod-ncus-api -> api)
+      APP_NAME=$(echo $WEBAPP_NAME | sed "s/app-$ENVIRONMENT-$REGION-//")
+      terraform import "module.app_service_ase[\"$APP_NAME\"].azurerm_linux_web_app.main" /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Web/sites/$WEBAPP_NAME
+    else
+      # Public app
+      APP_NAME=$(echo $WEBAPP_NAME | sed "s/app-$ENVIRONMENT-$REGION-//")
+      terraform import "module.app_service_public[\"$APP_NAME\"].azurerm_linux_web_app.main" /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Web/sites/$WEBAPP_NAME
+    fi
+  done
+fi
+
+# Import Function Apps
+echo "Getting Function Apps..."
+FUNCTIONS=$(az functionapp list --resource-group $RESOURCE_GROUP --query "[].name" -o tsv)
+
+if [ -n "$FUNCTIONS" ]; then
+  for FUNCTION_NAME in $FUNCTIONS; do
+    echo "Importing Function App: $FUNCTION_NAME..."
+    # Determine if it's in ASE or public
+    ASE_ID=$(az functionapp show --name $FUNCTION_NAME --resource-group $RESOURCE_GROUP --query "hostingEnvironmentProfile.id" -o tsv)
+    
+    if [ -n "$ASE_ID" ] && [ "$ASE_ID" != "null" ]; then
+      # Extract function name from full name (func-prod-ncus-events -> events)
+      FUNC_NAME=$(echo $FUNCTION_NAME | sed "s/func-$ENVIRONMENT-$REGION-//")
+      terraform import "module.function_app_ase[\"$FUNC_NAME\"].azurerm_linux_function_app.main" /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Web/sites/$FUNCTION_NAME
+    else
+      # Public function
+      FUNC_NAME=$(echo $FUNCTION_NAME | sed "s/func-$ENVIRONMENT-$REGION-//")
+      terraform import "module.function_app_public[\"$FUNC_NAME\"].azurerm_linux_function_app.main" /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Web/sites/$FUNCTION_NAME
+    fi
+  done
+fi
+
+# Import Container Apps
+echo "Getting Container Apps..."
+CONTAINERAPP_ENV=$(az containerapp env list --resource-group $RESOURCE_GROUP --query "[0].name" -o tsv)
+
+if [ -n "$CONTAINERAPP_ENV" ]; then
+  echo "Importing Container App Environment: $CONTAINERAPP_ENV..."
+  terraform import module.container_app_environment.azurerm_container_app_environment.main /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.App/managedEnvironments/$CONTAINERAPP_ENV
+  
+  # Import individual Container Apps
+  CONTAINER_APPS=$(az containerapp list --resource-group $RESOURCE_GROUP --query "[].name" -o tsv)
+  
+  if [ -n "$CONTAINER_APPS" ]; then
+    for CONTAINERAPP_NAME in $CONTAINER_APPS; do
+      echo "Importing Container App: $CONTAINERAPP_NAME..."
+      APP_NAME=$(echo $CONTAINERAPP_NAME | sed "s/containerapp-$ENVIRONMENT-$REGION-//")
+      terraform import "module.container_app[\"$APP_NAME\"].azurerm_container_app.main" /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.App/containerApps/$CONTAINERAPP_NAME
+    done
+  fi
+fi
+
+echo "Import complete. Review the output for any errors and validate the imported resources."
